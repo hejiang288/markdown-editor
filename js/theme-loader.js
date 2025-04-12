@@ -60,6 +60,9 @@ function changeCodeStyle() {
         
         // 更换代码样式CSS文件 - 代码样式更改后需要重新高亮代码块
         changeCssFile('code-style-css', `css/code-styles/${style}.css`, true);
+        
+        // 添加一个全局变量，记录最后一次代码样式变更时间，用于复制功能判断
+        window.lastCodeStyleChange = new Date().getTime();
     } catch (error) {
         console.error('更改代码样式失败:', error);
     }
