@@ -529,51 +529,151 @@ function copyContent() {
     const preview = document.getElementById('nice');
     const theme = document.getElementById('theme').value;
     const themeLabel = document.getElementById('theme').options[document.getElementById('theme').selectedIndex].text;
+    const codeStyle = document.getElementById('code-style').value;
     
-    // 在复制前临时添加主题标记（不会影响预览内容）
-    const themeTag = document.createElement('div');
-    themeTag.style.display = 'none';
-    themeTag.setAttribute('data-theme', theme);
-    themeTag.setAttribute('data-theme-name', themeLabel);
-    preview.appendChild(themeTag);
-    
-    const range = document.createRange();
-    range.selectNode(preview);
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(range);
+    // 声明临时容器变量，确保在try之外可以访问，用于清理
+    let tempContainer = null;
+    let themeTag = null;
     
     try {
+        // 先确保所有代码块样式都是最新的
+        const forceUpdate = window.lastCodeStyleChange && 
+            (new Date().getTime() - window.lastCodeStyleChange < 5000);
+            
+        // 对代码块应用当前选择的样式
+        if (typeof hljs !== 'undefined' && forceUpdate) {
+            // 强制重新应用高亮和样式
+            document.querySelectorAll('#nice pre code').forEach((block) => {
+                // 先移除现有高亮类
+                block.className = block.className.replace(/hljs-\w+/g, '').trim();
+                // 重新应用高亮
+                hljs.highlightBlock(block);
+            });
+            
+            // 重置最后更改时间
+            window.lastCodeStyleChange = null;
+        }
+        
+        // 在复制前临时添加主题和代码样式标记
+        themeTag = document.createElement('div');
+        themeTag.style.display = 'none';
+        themeTag.setAttribute('data-theme', theme);
+        themeTag.setAttribute('data-theme-name', themeLabel);
+        themeTag.setAttribute('data-code-style', codeStyle);
+        preview.appendChild(themeTag);
+        
+        // 创建临时容器，克隆预览内容
+        tempContainer = document.createElement('div');
+        tempContainer.style.position = 'absolute';
+        tempContainer.style.left = '-9999px';
+        tempContainer.style.top = '-9999px';
+        tempContainer.classList.add('code-style-' + codeStyle);
+        
+        // 拷贝当前预览内容
+        tempContainer.innerHTML = preview.innerHTML;
+        
+        // 添加到文档中，这样样式才能生效
+        document.body.appendChild(tempContainer);
+        
+        // 使用临时容器进行复制
+        const range = document.createRange();
+        range.selectNode(tempContainer);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        
         const successful = document.execCommand('copy');
         if (successful) {
             showToast('已复制HTML内容');
         } else {
             showToast('复制失败，请尝试使用快捷键');
         }
+        
+        // 复制完成后移除临时元素
+        if (themeTag && preview.contains(themeTag)) {
+            preview.removeChild(themeTag);
+        }
+        if (tempContainer && document.body.contains(tempContainer)) {
+            document.body.removeChild(tempContainer);
+        }
+        window.getSelection().removeAllRanges();
     } catch (err) {
         console.error('复制失败:', err);
         showToast('复制失败，请尝试使用快捷键');
+    } finally {
+        // 确保始终清理临时元素
+        try {
+            if (themeTag && preview.contains(themeTag)) {
+                preview.removeChild(themeTag);
+            }
+            if (tempContainer && document.body.contains(tempContainer)) {
+                document.body.removeChild(tempContainer);
+            }
+        } catch (e) {
+            console.error('清理临时元素失败:', e);
+        }
     }
-    
-    // 复制完成后移除临时标记
-    preview.removeChild(themeTag);
-    window.getSelection().removeAllRanges();
 }
 
-// 下载HTML文件
+// 下载HTML
 function downloadHTML() {
-    const preview = document.getElementById('nice');
-    const content = preview.innerHTML;
-    const blob = new Blob(['<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Markdown导出</title><style>' + getExportCSS() + '</style></head><body><div id="content">' + content + '</div></body></html>'], { type: 'text/html' });
+    // 获取预览内容
+    const preview = document.getElementById('preview-container');
+    const previewContent = preview.innerHTML;
+    
+    // 获取当前主题和代码样式
+    const theme = document.getElementById('theme').value;
+    const codeStyle = document.getElementById('code-style').value;
+    
+    // 创建临时容器，应用最新样式
+    const tempContainer = document.createElement('div');
+    tempContainer.innerHTML = previewContent;
+    tempContainer.id = 'content';
+    tempContainer.className = `theme-${theme} code-style-${codeStyle}`;
+    
+    // 查找所有代码块并应用当前代码样式
+    const codeBlocks = tempContainer.querySelectorAll('pre code');
+    codeBlocks.forEach(block => {
+        if (block.classList.contains('hljs')) {
+            // 重新应用语法高亮
+            hljs.highlightBlock(block);
+        }
+    });
+    
+    // 获取CSS
+    const exportCSS = getExportCSS();
+    
+    // 创建HTML文档
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown 导出</title>
+    <style>
+${exportCSS}
+    </style>
+</head>
+<body>
+    ${tempContainer.outerHTML}
+</body>
+</html>`;
+    
+    // 创建下载链接并触发下载
+    const blob = new Blob([html], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'markdown_export_' + new Date().toISOString().slice(0, 10) + '.html';
+    a.download = 'markdown-export.html';
     document.body.appendChild(a);
     a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
     
-    showToast('已下载HTML文件');
+    // 清理
+    setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('HTML文件下载成功');
+    }, 100);
 }
 
 // 获取导出用的CSS
@@ -615,6 +715,20 @@ function getExportCSS() {
         })
         .flatMap(sheet => Array.from(sheet.cssRules))
         .filter(rule => rule.selectorText && rule.selectorText.includes(`.code-style-${codeStyle}`))
+        .map(rule => rule.cssText)
+        .join('\n');
+    
+    // 从页面中提取highlight.js的CSS
+    const highlightStyles = Array.from(document.styleSheets)
+        .filter(sheet => {
+            try {
+                return sheet.cssRules;
+            } catch (e) {
+                return false;
+            }
+        })
+        .flatMap(sheet => Array.from(sheet.cssRules))
+        .filter(rule => rule.selectorText && rule.selectorText.includes('.hljs'))
         .map(rule => rule.cssText)
         .join('\n');
     
@@ -660,10 +774,38 @@ function getExportCSS() {
         #content code {
             font-family: "JetBrains Mono", Consolas, Monaco, "Andale Mono", monospace;
         }
+        
+        /* 确保代码块样式的正确应用 */
+        #content pre {
+            margin: 1.5em 0;
+            padding: 1em;
+            border-radius: 5px;
+            background-color: #f5f5f5;
+            overflow: auto;
+        }
+        #content pre code {
+            display: block;
+            padding: 0;
+            font-size: 0.9em;
+            line-height: 1.6;
+            background-color: transparent;
+        }
     `;
     
-    // 添加主题和代码样式
-    css += themeStyles + '\n' + codeStyles;
+    // 添加主题、代码样式和highlight.js样式
+    css += themeStyles + '\n' + codeStyles + '\n' + highlightStyles;
+    
+    // 确保应用当前选中的代码风格类到content元素
+    css += `
+        #content {
+            ${theme ? `--theme: ${theme};` : ''}
+            ${codeStyle ? `--code-style: ${codeStyle};` : ''}
+        }
+        #content pre code {
+            /* 确保导出时代码样式一致 */
+            font-family: "JetBrains Mono", Consolas, Monaco, monospace !important;
+        }
+    `;
     
     // 缓存结果并返回
     cachedExportCSS[cacheKey] = css;
@@ -723,20 +865,36 @@ function clearContent() {
     showToast('内容已清空');
 }
 
-// 显示提示
+// 显示操作反馈提示
 function showToast(message) {
     const toast = document.createElement('div');
-    toast.className = 'copy-success';
+    toast.className = 'toast';
     toast.textContent = message;
     document.body.appendChild(toast);
     
-    // 显示动画
-    setTimeout(() => toast.classList.add('show'), 10);
+    // 样式
+    toast.style.position = 'fixed';
+    toast.style.bottom = '20px';
+    toast.style.left = '50%';
+    toast.style.transform = 'translateX(-50%)';
+    toast.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    toast.style.color = 'white';
+    toast.style.padding = '10px 20px';
+    toast.style.borderRadius = '4px';
+    toast.style.zIndex = '1000';
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.3s ease-in-out';
     
-    // 2秒后移除提示
+    // 显示并自动消失
     setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => document.body.removeChild(toast), 300);
+        toast.style.opacity = '1';
+    }, 10);
+    
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => {
+            document.body.removeChild(toast);
+        }, 300);
     }, 2000);
 }
 
