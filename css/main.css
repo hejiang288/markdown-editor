@@ -59,7 +59,8 @@ body {
     display: flex;
     gap: 1rem;
     flex: 1;
-    min-height: calc(100vh - 300px);
+    min-height: 500px;
+    margin-bottom: 2rem;
 }
 
 /* 响应式布局 */
@@ -71,7 +72,15 @@ body {
 
     .main-content {
         flex-direction: column;
-        min-height: calc(100vh - 250px);
+        min-height: auto;
+    }
+
+    .editor-section, .preview-section {
+        min-height: auto;
+    }
+    
+    .editor-container, .CodeMirror, #nice {
+        min-height: 300px;
     }
 
     .theme-selector {
@@ -135,17 +144,20 @@ body {
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.08);
     overflow: hidden;
+    height: auto;
 }
 
 .editor-container {
     flex: 1;
-    overflow: hidden;
+    overflow: visible;
     border-top: 1px solid #eee;
+    min-height: 500px;
 }
 
 /* CodeMirror自定义样式 */
 .CodeMirror {
-    height: 100% !important;
+    height: auto !important;
+    min-height: 500px !important;
     font-size: 15px;
     font-family: "JetBrains Mono", Consolas, Monaco, "Andale Mono", monospace;
     line-height: 1.6;
@@ -166,25 +178,27 @@ body {
     flex: 1;
     background-color: #fff;
     border-radius: 12px;
-    overflow-y: auto;
+    overflow: visible;
     box-shadow: 0 2px 12px rgba(0,0,0,0.08);
     min-width: 0;
-    max-height: calc(100vh - 220px);
+    max-height: none;
     display: flex;
     flex-direction: column;
+    height: auto;
 }
 
 /* 预览内容容器 */
 #nice {
     flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: visible;
     padding: 40px;
     word-break: break-word;
     line-height: 1.75;
     font-weight: 400;
     font-size: 15px;
-    will-change: transform; /* 性能优化，加速渲染 */
+    will-change: transform;
+    height: auto;
+    min-height: 500px;
 }
 
 /* 工具栏 */
