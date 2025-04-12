@@ -527,57 +527,11 @@ function previewMarkdown() {
 // 复制HTML内容
 function copyContent() {
     const preview = document.getElementById('nice');
-    const theme = document.getElementById('theme').value;
-    const themeLabel = document.getElementById('theme').options[document.getElementById('theme').selectedIndex].text;
-    const codeStyle = document.getElementById('code-style').value;
-    
-    // 声明临时容器变量，确保在try之外可以访问，用于清理
-    let tempContainer = null;
-    let themeTag = null;
     
     try {
-        // 先确保所有代码块样式都是最新的
-        const forceUpdate = window.lastCodeStyleChange && 
-            (new Date().getTime() - window.lastCodeStyleChange < 5000);
-            
-        // 对代码块应用当前选择的样式
-        if (typeof hljs !== 'undefined' && forceUpdate) {
-            // 强制重新应用高亮和样式
-            document.querySelectorAll('#nice pre code').forEach((block) => {
-                // 先移除现有高亮类
-                block.className = block.className.replace(/hljs-\w+/g, '').trim();
-                // 重新应用高亮
-                hljs.highlightBlock(block);
-            });
-            
-            // 重置最后更改时间
-            window.lastCodeStyleChange = null;
-        }
-        
-        // 在复制前临时添加主题和代码样式标记
-        themeTag = document.createElement('div');
-        themeTag.style.display = 'none';
-        themeTag.setAttribute('data-theme', theme);
-        themeTag.setAttribute('data-theme-name', themeLabel);
-        themeTag.setAttribute('data-code-style', codeStyle);
-        preview.appendChild(themeTag);
-        
-        // 创建临时容器，克隆预览内容
-        tempContainer = document.createElement('div');
-        tempContainer.style.position = 'absolute';
-        tempContainer.style.left = '-9999px';
-        tempContainer.style.top = '-9999px';
-        tempContainer.classList.add('code-style-' + codeStyle);
-        
-        // 拷贝当前预览内容
-        tempContainer.innerHTML = preview.innerHTML;
-        
-        // 添加到文档中，这样样式才能生效
-        document.body.appendChild(tempContainer);
-        
-        // 使用临时容器进行复制
+        // 直接复制预览内容
         const range = document.createRange();
-        range.selectNode(tempContainer);
+        range.selectNode(preview);
         window.getSelection().removeAllRanges();
         window.getSelection().addRange(range);
         
@@ -588,49 +542,29 @@ function copyContent() {
             showToast('复制失败，请尝试使用快捷键');
         }
         
-        // 复制完成后移除临时元素
-        if (themeTag && preview.contains(themeTag)) {
-            preview.removeChild(themeTag);
-        }
-        if (tempContainer && document.body.contains(tempContainer)) {
-            document.body.removeChild(tempContainer);
-        }
         window.getSelection().removeAllRanges();
     } catch (err) {
         console.error('复制失败:', err);
         showToast('复制失败，请尝试使用快捷键');
-    } finally {
-        // 确保始终清理临时元素
-        try {
-            if (themeTag && preview.contains(themeTag)) {
-                preview.removeChild(themeTag);
-            }
-            if (tempContainer && document.body.contains(tempContainer)) {
-                document.body.removeChild(tempContainer);
-            }
-        } catch (e) {
-            console.error('清理临时元素失败:', e);
-        }
     }
 }
 
 // 下载HTML
 function downloadHTML() {
     // 获取预览内容
-    const preview = document.getElementById('preview-container');
+    const preview = document.getElementById('nice');
     const previewContent = preview.innerHTML;
     
-    // 获取当前主题和代码样式
+    // 获取当前主题
     const theme = document.getElementById('theme').value;
-    const codeStyle = document.getElementById('code-style').value;
     
     // 创建临时容器，应用最新样式
     const tempContainer = document.createElement('div');
     tempContainer.innerHTML = previewContent;
     tempContainer.id = 'content';
-    tempContainer.className = `theme-${theme} code-style-${codeStyle}`;
+    tempContainer.className = `theme-${theme}`;
     
-    // 查找所有代码块并应用当前代码样式
+    // 查找所有代码块并应用高亮
     const codeBlocks = tempContainer.querySelectorAll('pre code');
     codeBlocks.forEach(block => {
         if (block.classList.contains('hljs')) {
@@ -679,15 +613,14 @@ ${exportCSS}
 // 获取导出用的CSS
 function getExportCSS() {
     const theme = document.getElementById('theme').value;
-    const codeStyle = document.getElementById('code-style').value;
     
     // 检查缓存中是否已存在相同配置的CSS
-    const cacheKey = `${theme}-${codeStyle}`;
+    const cacheKey = `${theme}`;
     if (cachedExportCSS[cacheKey]) {
         return cachedExportCSS[cacheKey];
     }
     
-    // 收集当前选择的主题和代码样式
+    // 收集当前选择的主题CSS
     let css = '';
     
     // 从页面中提取当前主题的CSS
@@ -701,20 +634,6 @@ function getExportCSS() {
         })
         .flatMap(sheet => Array.from(sheet.cssRules))
         .filter(rule => rule.selectorText && rule.selectorText.includes(`.theme-${theme}`))
-        .map(rule => rule.cssText)
-        .join('\n');
-    
-    // 从页面中提取当前代码样式的CSS
-    const codeStyles = Array.from(document.styleSheets)
-        .filter(sheet => {
-            try {
-                return sheet.cssRules;
-            } catch (e) {
-                return false;
-            }
-        })
-        .flatMap(sheet => Array.from(sheet.cssRules))
-        .filter(rule => rule.selectorText && rule.selectorText.includes(`.code-style-${codeStyle}`))
         .map(rule => rule.cssText)
         .join('\n');
     
@@ -792,14 +711,13 @@ function getExportCSS() {
         }
     `;
     
-    // 添加主题、代码样式和highlight.js样式
-    css += themeStyles + '\n' + codeStyles + '\n' + highlightStyles;
+    // 添加主题和highlight.js样式
+    css += themeStyles + '\n' + highlightStyles;
     
-    // 确保应用当前选中的代码风格类到content元素
+    // 确保应用当前选中的主题到content元素
     css += `
         #content {
             ${theme ? `--theme: ${theme};` : ''}
-            ${codeStyle ? `--code-style: ${codeStyle};` : ''}
         }
         #content pre code {
             /* 确保导出时代码样式一致 */
