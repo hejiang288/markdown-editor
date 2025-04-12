@@ -16,7 +16,7 @@
 
 ### 在线使用
 
-访问[Markdown编辑器](https://github.com/markdown-editor)即可使用。
+访问[Markdown编辑器](https://hejiang288.github.io/markdown-editor)即可使用。
 
 ### 本地部署
 
