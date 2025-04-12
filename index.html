@@ -28,7 +28,7 @@
                 <div class="logo-text">Markdown编辑器</div>
             </div>
             <div class="header-nav">
-                <a href="/markdown-editor" class="active">首页</a>
+                <a href="index.html" class="active">首页</a>
                 <a href="guide.html">使用说明</a>
                 <a href="about.html">关于</a>
             </div>
@@ -148,8 +148,8 @@
     
     <!-- 示例内容 -->
     <script>
-        // 示例Markdown内容
-        const exampleMarkdown = `# Markdown编辑器
+        // 示例Markdown内容 - 设置为全局变量以便main.js访问
+        window.exampleMarkdown = `# Markdown编辑器
 
 ## 介绍
 这是一个优雅的Markdown编辑器，提供了美观的排版样式。
@@ -181,13 +181,6 @@ def hello_world():
 | 导出 | 多种格式 | ✓ |
 | 主题 | 自定义样式 | ✓ |
 `;
-
-        // 初始化时设置示例内容
-        document.addEventListener('DOMContentLoaded', function() {
-            if (editor) {
-        editor.setValue(exampleMarkdown);
-            }
-        });
     </script>
 </body>
 </html> 
