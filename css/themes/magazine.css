@@ -1,0 +1,194 @@
+/* 杂志风格主题 */
+.theme-magazine #nice {
+    font-family: "Playfair Display", "Noto Serif", Georgia, "Times New Roman", serif;
+    color: #1a1a1a;
+    line-height: 1.7;
+    padding: 25px;
+    background: #fff;
+    font-size: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.theme-magazine #nice::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: #000;
+}
+
+.theme-magazine #nice h1 {
+    margin: 2em 0 0.8em;
+    font-size: 2.2em;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: #000;
+    position: relative;
+}
+
+.theme-magazine #nice h1::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: #000;
+    margin: 0.5em auto 0;
+}
+
+.theme-magazine #nice h2 {
+    margin: 1.8em 0 0.8em;
+    font-size: 1.7em;
+    font-weight: 700;
+    color: #000;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.3em;
+}
+
+.theme-magazine #nice h3 {
+    margin: 1.5em 0 0.8em;
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #000;
+    display: inline-block;
+    border-bottom: 2px solid #000;
+    padding-bottom: 0.2em;
+}
+
+.theme-magazine #nice p {
+    margin: 1.2em 0;
+    line-height: 1.8;
+    font-size: 1.05em;
+}
+
+.theme-magazine #nice p:first-letter {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #000;
+}
+
+.theme-magazine #nice ul,
+.theme-magazine #nice ol {
+    margin: 1.2em 0;
+    padding-left: 2em;
+}
+
+.theme-magazine #nice ul li,
+.theme-magazine #nice ol li {
+    margin: 0.5em 0;
+    line-height: 1.7;
+    color: #333;
+}
+
+.theme-magazine #nice blockquote {
+    margin: 2em 0;
+    padding: 0;
+    border-left: none;
+    font-style: italic;
+    font-size: 1.1em;
+    position: relative;
+    text-align: center;
+    color: #444;
+}
+
+.theme-magazine #nice blockquote::before,
+.theme-magazine #nice blockquote::after {
+    content: "";
+    display: block;
+    width: 150px;
+    height: 2px;
+    background: #ddd;
+    margin: 1em auto;
+}
+
+.theme-magazine #nice blockquote p {
+    padding: 0 10%;
+    font-size: 1.05em;
+    line-height: 1.7;
+}
+
+.theme-magazine #nice a {
+    color: #d32f2f;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(211, 47, 47, 0.3);
+    transition: all 0.3s ease;
+}
+
+.theme-magazine #nice a:hover {
+    color: #b71c1c;
+    border-bottom: 1px solid #b71c1c;
+}
+
+.theme-magazine #nice code {
+    font-family: "Fira Code", Consolas, Monaco, monospace;
+    background: #f7f7f7;
+    border: 1px solid #eee;
+    color: #333;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+.theme-magazine #nice pre {
+    margin: 1.5em 0;
+    padding: 1em;
+    background: #f7f7f7;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    overflow-x: auto;
+}
+
+.theme-magazine #nice pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.9em;
+    color: #333;
+}
+
+.theme-magazine #nice table {
+    width: 100%;
+    margin: 2em 0;
+    border-collapse: collapse;
+    font-size: 0.95em;
+    border: 1px solid #eee;
+}
+
+.theme-magazine #nice table th,
+.theme-magazine #nice table td {
+    padding: 12px 15px;
+    border: 1px solid #eee;
+}
+
+.theme-magazine #nice table th {
+    background: #f7f7f7;
+    font-weight: bold;
+    color: #000;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 0.1em;
+}
+
+.theme-magazine #nice table tr:nth-child(even) {
+    background: #fafafa;
+}
+
+.theme-magazine #nice img {
+    max-width: 100%;
+    display: block;
+    margin: 2em auto;
+    border: 10px solid #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.theme-magazine #nice hr {
+    margin: 3em auto;
+    width: 50%;
+    border: none;
+    border-bottom: 1px solid #ddd;
+} 

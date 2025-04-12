@@ -1,0 +1,141 @@
+/* MDNice主题 */
+.theme-mdnice #nice {
+    font-family: Optima, 'Microsoft YaHei', PingFangSC-regular, serif;
+    font-size: 16px;
+    color: #000;
+    line-height: 1.5em;
+    word-spacing: 0em;
+    letter-spacing: 0em;
+    word-break: break-word;
+    padding: 10px;
+}
+
+.theme-mdnice #nice h1 {
+    font-size: 24px;
+    color: #773098;
+    line-height: 1.5em;
+    text-align: left;
+    font-weight: bold;
+    margin: 30px 0 15px;
+    display: block;
+}
+
+.theme-mdnice #nice h2 {
+    font-size: 18px;
+    color: #fff;
+    line-height: 2.4em;
+    background-color: #212122;
+    padding: 0 15px 0 15px;
+    border-radius: 0 40px 40px 0;
+    display: inline-block;
+    margin: 30px 0 15px;
+    font-weight: bold;
+}
+
+.theme-mdnice #nice h3 {
+    font-size: 18px;
+    color: #595959;
+    line-height: 1.8em;
+    padding: 4px 6px;
+    margin: 30px 0 15px;
+    border-top: 2px solid #222;
+    font-weight: bold;
+    display: block;
+}
+
+.theme-mdnice #nice p {
+    color: #000;
+    font-size: 15px;
+    line-height: 1.8em;
+    letter-spacing: 0em;
+    margin: 0;
+    padding: 8px 0;
+}
+
+.theme-mdnice #nice ul {
+    list-style-type: disc;
+    margin: 8px 0;
+    padding-left: 25px;
+    color: #000;
+}
+
+.theme-mdnice #nice ul li {
+    margin: 5px 0;
+    color: #010101;
+    font-size: 15px;
+    line-height: 1.8em;
+}
+
+.theme-mdnice #nice blockquote {
+    margin: 20px 0;
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.05);
+    border-left: 3px solid rgba(0, 0, 0, 0.4);
+}
+
+.theme-mdnice #nice blockquote p {
+    font-size: 15px;
+    line-height: 1.8em;
+}
+
+.theme-mdnice #nice pre {
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;
+    margin: 10px 0;
+}
+
+.theme-mdnice #nice pre code {
+    overflow-x: auto;
+    padding: 16px;
+    color: #383a42;
+    padding-top: 15px;
+    background: #fafafa;
+    border-radius: 5px;
+    font-family: Consolas, Monaco, Menlo, monospace;
+    font-size: 12px;
+}
+
+.theme-mdnice #nice table {
+    display: table;
+    text-align: left;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.theme-mdnice #nice table th {
+    background: #f0f0f0;
+    color: #000;
+    font-weight: bold;
+    padding: 5px 10px;
+    border: 1px solid rgba(204,204,204,0.4);
+    min-width: 85px;
+    font-size: 15px;
+}
+
+.theme-mdnice #nice table td {
+    padding: 5px 10px;
+    border: 1px solid rgba(204,204,204,0.4);
+    min-width: 85px;
+    font-size: 15px;
+}
+
+.theme-mdnice #nice table tr:nth-child(2n) {
+    background-color: #f8f8f8;
+}
+
+/* 代码高亮 */
+.theme-mdnice .hljs-keyword {
+    color: #a626a4;
+}
+
+.theme-mdnice .hljs-string {
+    color: #50a14f;
+}
+
+.theme-mdnice .hljs-literal {
+    color: #0184bb;
+}
+
+.theme-mdnice .hljs-title {
+    color: #4078f2;
+} 

@@ -1,0 +1,154 @@
+/* 自然绿色主题 */
+.theme-nature #nice {
+    font-family: "Noto Serif", "PT Serif", Georgia, "Times New Roman", serif;
+    color: #3c4a3e;
+    line-height: 1.8;
+    padding: 20px;
+    background: #fcfdf9;
+    background-image: linear-gradient(rgba(215, 240, 220, 0.2) 1px, transparent 1px);
+    background-size: 100% 32px;
+}
+
+.theme-nature #nice h1 {
+    margin: 1.5em 0 1em;
+    padding-bottom: 0.5em;
+    font-size: 1.8em;
+    border-bottom: 2px solid #7da87b;
+    text-align: left;
+    color: #3c5943;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+
+.theme-nature #nice h2 {
+    margin: 1.5em 0 0.8em;
+    padding: 0.4em 0.6em;
+    font-size: 1.4em;
+    background: rgba(125, 168, 123, 0.1);
+    border-radius: 4px;
+    color: #3c5943;
+    border-left: 4px solid #7da87b;
+}
+
+.theme-nature #nice h3 {
+    margin: 1.2em 0 0.6em;
+    font-size: 1.2em;
+    color: #3c5943;
+    position: relative;
+    padding-left: 16px;
+}
+
+.theme-nature #nice h3:before {
+    content: "◈";
+    position: absolute;
+    left: 0;
+    color: #7da87b;
+}
+
+.theme-nature #nice ul {
+    margin: 1em 0;
+    padding-left: 1.5em;
+}
+
+.theme-nature #nice ul li {
+    margin: 0.5em 0;
+    list-style: none;
+    position: relative;
+    padding-left: 0.8em;
+}
+
+.theme-nature #nice ul li:before {
+    content: "•";
+    position: absolute;
+    left: -0.5em;
+    color: #7da87b;
+    font-weight: bold;
+}
+
+.theme-nature #nice ol {
+    margin: 1em 0;
+    padding-left: 1.5em;
+}
+
+.theme-nature #nice ol li {
+    margin: 0.5em 0;
+    color: #3c4a3e;
+}
+
+.theme-nature #nice blockquote {
+    margin: 1.5em 0;
+    padding: 15px 20px;
+    background: rgba(215, 240, 220, 0.3);
+    border-left: 4px solid #7da87b;
+    color: #5a6e5c;
+    border-radius: 0 4px 4px 0;
+}
+
+.theme-nature #nice blockquote p {
+    margin: 0.6em 0;
+    font-style: italic;
+}
+
+.theme-nature #nice a {
+    color: #5d8e5a;
+    text-decoration: none;
+    border-bottom: 1px dashed #7da87b;
+    transition: all 0.3s ease;
+}
+
+.theme-nature #nice a:hover {
+    color: #3c5943;
+    border-bottom: 1px solid #3c5943;
+}
+
+.theme-nature #nice code {
+    padding: 2px 4px;
+    background: rgba(215, 240, 220, 0.4);
+    color: #3c5943;
+    border-radius: 3px;
+    font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+}
+
+.theme-nature #nice pre {
+    margin: 1.2em 0;
+    padding: 15px;
+    background: rgba(250, 252, 245, 0.8);
+    border: 1px solid rgba(125, 168, 123, 0.2);
+    border-radius: 6px;
+}
+
+.theme-nature #nice pre code {
+    background: none;
+    color: #3c4a3e;
+    padding: 0;
+}
+
+.theme-nature #nice table {
+    width: 100%;
+    margin: 1.5em 0;
+    border-collapse: collapse;
+    border: 1px solid #d0e5cf;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.theme-nature #nice table th,
+.theme-nature #nice table td {
+    padding: 10px 15px;
+    border: 1px solid #d0e5cf;
+}
+
+.theme-nature #nice table th {
+    background: rgba(215, 240, 220, 0.4);
+    color: #3c5943;
+    font-weight: 600;
+}
+
+.theme-nature #nice table tr:nth-child(even) {
+    background: rgba(250, 252, 245, 0.8);
+}
+
+.theme-nature #nice p {
+    margin: 1.2em 0;
+    line-height: 1.8;
+} 

@@ -1,0 +1,131 @@
+/* 极简风格主题 */
+.theme-minimal #nice {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+    background: #fff;
+    font-size: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.theme-minimal #nice h1,
+.theme-minimal #nice h2,
+.theme-minimal #nice h3,
+.theme-minimal #nice h4,
+.theme-minimal #nice h5,
+.theme-minimal #nice h6 {
+    margin: 1.5em 0 0.8em;
+    font-weight: 600;
+    color: #222;
+    line-height: 1.4;
+}
+
+.theme-minimal #nice h1 {
+    font-size: 1.8em;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.3em;
+}
+
+.theme-minimal #nice h2 {
+    font-size: 1.5em;
+}
+
+.theme-minimal #nice h3 {
+    font-size: 1.3em;
+}
+
+.theme-minimal #nice p {
+    margin: 1em 0;
+    line-height: 1.6;
+}
+
+.theme-minimal #nice ul,
+.theme-minimal #nice ol {
+    margin: 1em 0;
+    padding-left: 2em;
+}
+
+.theme-minimal #nice ul li,
+.theme-minimal #nice ol li {
+    margin: 0.5em 0;
+}
+
+.theme-minimal #nice ul li {
+    list-style: disc;
+}
+
+.theme-minimal #nice ol li {
+    list-style: decimal;
+}
+
+.theme-minimal #nice blockquote {
+    margin: 1em 0;
+    padding: 0.5em 1em;
+    border-left: 4px solid #eee;
+    color: #666;
+}
+
+.theme-minimal #nice blockquote p {
+    margin: 0.5em 0;
+}
+
+.theme-minimal #nice a {
+    color: #2070e0;
+    text-decoration: none;
+}
+
+.theme-minimal #nice a:hover {
+    text-decoration: underline;
+}
+
+.theme-minimal #nice code {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    background: #f6f8fa;
+    color: #333;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-size: 85%;
+}
+
+.theme-minimal #nice pre {
+    margin: 1em 0;
+    padding: 16px;
+    overflow: auto;
+    background-color: #f6f8fa;
+    border-radius: 3px;
+    line-height: 1.45;
+}
+
+.theme-minimal #nice pre code {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    display: block;
+    overflow-x: auto;
+}
+
+.theme-minimal #nice table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+}
+
+.theme-minimal #nice table th,
+.theme-minimal #nice table td {
+    border: 1px solid #dfe2e5;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.theme-minimal #nice table th {
+    background-color: #f6f8fa;
+    font-weight: 600;
+}
+
+.theme-minimal #nice img {
+    max-width: 100%;
+    display: block;
+    margin: 1.5em auto;
+} 

@@ -1,0 +1,148 @@
+/* 简约商务风 */
+.theme-business #nice {
+    font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #2c3e50;
+    padding: 35px 45px;
+}
+
+.theme-business #nice h1 {
+    font-size: 24px;
+    text-align: center;
+    margin: 2em 0 1em;
+    padding-bottom: 0.5em;
+    color: #1e80ff;
+    font-weight: 600;
+    position: relative;
+    text-shadow: 0 2px 4px rgba(30,128,255,0.2);
+}
+
+.theme-business #nice h1:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 3px;
+    background: linear-gradient(90deg, #1e80ff, rgba(30,128,255,0.2));
+    border-radius: 3px;
+}
+
+.theme-business #nice h2 {
+    font-size: 1.8em;
+    color: #34495e;
+    padding: 0.5em 0;
+    background: none;
+    text-align: center;
+    position: relative;
+    margin: 2em 0 1em;
+}
+
+.theme-business #nice h2:after {
+    content: '';
+    display: block;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #34495e, transparent);
+    margin: 0.5em auto 0;
+}
+
+.theme-business #nice h3 {
+    font-size: 1.4em;
+    color: #34495e;
+    padding-left: 12px;
+    border-left: 3px solid #34495e;
+    margin: 1.5em 0 1em;
+    line-height: 1.4;
+    position: relative;
+    background: linear-gradient(90deg, rgba(52, 73, 94, 0.05) 0%, transparent 100%);
+    padding: 0.5em 1em;
+    border-radius: 0 4px 4px 0;
+}
+
+.theme-business #nice blockquote {
+    margin: 2em 0;
+    padding: 1.5em 2em;
+    background: #f8f9fa;
+    border: none;
+    border-radius: 8px;
+    position: relative;
+    color: #5c6b7a;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+.theme-business #nice blockquote:before {
+    content: '"';
+    position: absolute;
+    left: 20px;
+    top: 0;
+    font-size: 3em;
+    color: #34495e;
+    opacity: 0.15;
+    font-family: Georgia, serif;
+}
+
+.theme-business #nice blockquote p {
+    margin: 0.6em 0;
+    font-size: 1.05em;
+    line-height: 1.8;
+    color: #5c6b7a;
+    font-style: italic;
+}
+
+.theme-business #nice code {
+    color: #476582;
+    background: rgba(52, 73, 94, 0.05);
+    padding: 0.25em 0.5em;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.theme-business #nice pre {
+    background: #f8f9fa;
+    padding: 1.5em;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+.theme-business #nice pre code {
+    background: none;
+    color: #476582;
+    font-size: 0.9em;
+    padding: 0;
+}
+
+.theme-business #nice ul li {
+    color: #2c3e50;
+    line-height: 1.8;
+    padding-left: 0.5em;
+}
+
+.theme-business #nice ol li {
+    color: #2c3e50;
+    line-height: 1.8;
+    padding-left: 0.5em;
+}
+
+.theme-business #nice table {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    margin: 2em 0;
+}
+
+.theme-business #nice table th {
+    background: #f8f9fa;
+    color: #34495e;
+    font-weight: 500;
+    padding: 1em;
+}
+
+.theme-business #nice table td {
+    padding: 1em;
+    color: #2c3e50;
+}
+
+.theme-business #nice table tr:nth-child(even) {
+    background: #f8f9fa;
+} 

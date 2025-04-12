@@ -1,0 +1,26 @@
+/* 默认代码样式 */
+.code-style-default pre {
+    margin: 1em 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    overflow-x: auto;
+}
+
+.code-style-default pre code {
+    padding: 0;
+    background: none;
+    color: #333;
+    font-size: 13px;
+    line-height: 1.6;
+    font-family: "JetBrains Mono", Consolas, Monaco, "Andale Mono", monospace;
+}
+
+.code-style-default code {
+    padding: 2px 4px;
+    font-size: 13px;
+    background: rgba(30,128,255,0.1);
+    border-radius: 3px;
+    color: #1e80ff;
+    font-family: "JetBrains Mono", Consolas, Monaco, "Andale Mono", monospace;
+} 

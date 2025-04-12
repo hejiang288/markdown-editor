@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于 - Markdown编辑器</title>
+    
+    <!-- 引入自定义CSS -->
+    <link href="css/main.css" rel="stylesheet">
+    <style>
+        .about-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        
+        .about-section {
+            margin-bottom: 2.5rem;
+        }
+        
+        .about-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .about-section h2 {
+            margin-top: 1.5rem;
+            padding-bottom: 0.5rem;
+            font-size: 1.8rem;
+            color: #1e80ff;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .team-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .team-member {
+            flex: 1;
+            min-width: 200px;
+            padding: 1.5rem;
+            border-radius: 8px;
+            background: #f8f9fa;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem;
+            display: block;
+            background: #e0e0e0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .avatar-placeholder {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e80ff, #1b72e8);
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .member-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0.5rem 0;
+            color: #333;
+        }
+        
+        .member-role {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline {
+            margin: 2rem 0;
+            padding-left: 2rem;
+            border-left: 3px solid #1e80ff;
+        }
+        
+        .timeline-item {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #1e80ff;
+            left: -2.5rem;
+            top: 0.4rem;
+        }
+        
+        .timeline-date {
+            font-weight: 600;
+            color: #1e80ff;
+            margin-bottom: 0.3rem;
+        }
+        
+        .timeline-content {
+            color: #555;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .tech-item {
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            background: #f0f7ff;
+            color: #1e80ff;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .contact-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .contact-card {
+            flex: 1;
+            min-width: 250px;
+            padding: 1.5rem;
+            border-radius: 8px;
+            background: #f8f9fa;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1e80ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .contact-info h4 {
+            margin: 0 0 0.5rem;
+            color: #333;
+        }
+        
+        .contact-info p {
+            margin: 0;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 页眉 -->
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo">M</div>
+                <div class="logo-text">Markdown编辑器</div>
+            </div>
+            <div class="header-nav">
+                <a href="index.html">首页</a>
+                <a href="guide.html">使用说明</a>
+                <a href="about.html" class="active">关于</a>
+            </div>
+            <div class="header-right">
+                优雅的 Markdown 排版工具
+            </div>
+        </div>
+        
+        <!-- 关于内容 -->
+        <div class="about-container">
+            <h1>关于 Markdown 编辑器</h1>
+            
+            <div class="about-section">
+                <h2>我们的使命</h2>
+                <p>为中文内容创作者提供一个简单、优雅的 Markdown 排版工具，特别优化微信公众号的内容排版，让技术写作变得更加轻松愉快。</p>
+                <p>无论您是技术博主、内容创作者、还是技术文档撰写者，我们的工具都能帮助您专注于内容创作，不必担心排版问题。</p>
+            </div>
+            
+            <div class="about-section">
+                <h2>核心功能</h2>
+                <ul>
+                    <li><strong>多主题支持</strong>：提供多种精美主题，满足不同场景需求</li>
+                    <li><strong>代码高亮</strong>：对各种编程语言提供专业的代码高亮</li>
+                    <li><strong>微信优化</strong>：特别优化了微信公众号内容排版</li>
+                    <li><strong>HTML转换</strong>：粘贴HTML内容自动转为Markdown</li>
+                    <li><strong>拖放支持</strong>：支持拖放Markdown文件到编辑区</li>
+                    <li><strong>导出功能</strong>：一键下载HTML格式的文章</li>
+                </ul>
+            </div>
+            
+            <div class="about-section">
+                <h2>技术栈</h2>
+                <p>我们的编辑器采用简洁高效的技术栈，保证了轻量级和高性能：</p>
+                <div class="tech-stack">
+                    <div class="tech-item">HTML5</div>
+                    <div class="tech-item">CSS3</div>
+                    <div class="tech-item">JavaScript</div>
+                    <div class="tech-item">CodeMirror</div>
+                    <div class="tech-item">Marked.js</div>
+                    <div class="tech-item">Highlight.js</div>
+                    <div class="tech-item">Turndown.js</div>
+                </div>
+                <p>编辑器完全在前端运行，无需后端服务器，您的内容不会通过网络传输，保证了数据的安全性和隐私。</p>
+            </div>
+            
+            <div class="about-section">
+                <h2>开发历程</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">2023年12月</div>
+                        <div class="timeline-content">项目构思与规划，确定主要功能和技术路线</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2024年1月</div>
+                        <div class="timeline-content">核心编辑器开发，实现基础的编辑与预览功能</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2024年2月</div>
+                        <div class="timeline-content">主题系统开发，设计并实现多种排版主题</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2024年3月</div>
+                        <div class="timeline-content">代码高亮优化，增强对各种编程语言的支持</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2024年4月</div>
+                        <div class="timeline-content">微信公众号排版专项优化，解决平台兼容性问题</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2024年5月</div>
+                        <div class="timeline-content">正式发布1.0版本，持续收集用户反馈进行改进</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="about-section">
+                <h2>开发团队</h2>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="avatar-placeholder">M</div>
+                        <div class="member-name">张小明</div>
+                        <div class="member-role">项目发起人 / 前端开发</div>
+                        <p>热爱开源，专注于提升内容创作体验</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar-placeholder">S</div>
+                        <div class="member-name">李思思</div>
+                        <div class="member-role">UI设计 / 主题系统</div>
+                        <p>有多年设计经验，负责编辑器的视觉体验</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar-placeholder">D</div>
+                        <div class="member-name">王大力</div>
+                        <div class="member-role">技术架构 / 性能优化</div>
+                        <p>资深前端工程师，专注于编辑器性能优化</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="about-section">
+                <h2>未来规划</h2>
+                <ul>
+                    <li><strong>图片上传</strong>：集成图床功能，支持直接上传图片</li>
+                    <li><strong>本地存储</strong>：增加文章自动保存和历史记录功能</li>
+                    <li><strong>更多主题</strong>：开发更多专业领域的排版主题</li>
+                    <li><strong>Markdown扩展</strong>：支持更多Markdown扩展语法</li>
+                    <li><strong>多语言支持</strong>：增加英文等多语言界面</li>
+                    <li><strong>移动端优化</strong>：增强在手机和平板上的使用体验</li>
+                </ul>
+            </div>
+            
+            <div class="about-section">
+                <h2>联系我们</h2>
+                <div class="contact-grid">
+                    <div class="contact-card">
+                        <div class="contact-icon">@</div>
+                        <div class="contact-info">
+                            <h4>电子邮件</h4>
+                            <p>contact@markdown-editor.example.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon">G</div>
+                        <div class="contact-info">
+                            <h4>GitHub</h4>
+                            <p>github.com/markdown-editor</p>
+                        </div>
+                    </div>
+                </div>
+                <p>如果您有任何问题、建议或合作意向，请随时与我们联系。我们会在2个工作日内回复您的邮件。</p>
+                <p>同时，我们也欢迎您在GitHub上提交Issues或Pull Requests，参与到编辑器的改进中来。</p>
+            </div>
+            
+            <div class="about-section">
+                <h2>致谢</h2>
+                <p>感谢以下开源项目，没有它们就没有我们的编辑器：</p>
+                <ul>
+                    <li>CodeMirror - 功能强大的文本编辑器</li>
+                    <li>Marked.js - 高效的Markdown解析器</li>
+                    <li>Highlight.js - 代码高亮库</li>
+                    <li>Turndown.js - HTML到Markdown的转换库</li>
+                </ul>
+                <p>也感谢所有使用我们编辑器的用户，您的支持和反馈是我们前进的动力！</p>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <div class="footer">
+            <p>© 2024 Markdown编辑器 | 优雅的排版工具 | 
+                <a href="https://github.com/markdown-editor" target="_blank" rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>GitHub
+                </a>
+            </p>
+        </div>
+    </div>
+</body>
+</html> 

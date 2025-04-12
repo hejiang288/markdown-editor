@@ -1,0 +1,114 @@
+/* 暗色科技风 - 适配公众号 */
+.theme-dark #nice {
+    background: #ffffff;  /* 改为白色背景 */
+    color: #333333;      /* 改为深色文字 */
+    padding: 35px 45px;
+}
+
+.theme-dark #nice h1 {
+    font-size: 24px;
+    color: #2b6cb0;
+    margin: 1.8em 0 1em;
+    padding: 0.8em;
+    background: linear-gradient(135deg, rgba(43,108,176,0.08), transparent);
+    border-radius: 12px;
+    font-weight: 600;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.theme-dark #nice h1:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #2b6cb0, transparent);
+    border-radius: 4px;
+}
+
+.theme-dark #nice h2 {
+    color: #2b6cb0;
+    background: linear-gradient(90deg, rgba(43, 108, 176, 0.08) 0%, rgba(43, 108, 176, 0) 100%);
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.theme-dark #nice h3 {
+    color: #2b6cb0;
+    font-weight: 500;
+}
+
+.theme-dark #nice h3:before {
+    background: #2b6cb0;
+    opacity: 0.8;
+}
+
+.theme-dark #nice p {
+    color: #333333;
+    line-height: 1.8;
+}
+
+.theme-dark #nice blockquote {
+    background: #f8fafc;
+    border-left: 4px solid #2b6cb0;
+    color: #4a5568;
+    border-radius: 6px;
+}
+
+.theme-dark #nice code {
+    color: #2b6cb0;
+    background: rgba(43, 108, 176, 0.1);
+    border-radius: 4px;
+}
+
+.theme-dark #nice pre {
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.theme-dark #nice pre code {
+    color: #333333;
+    background: none;
+}
+
+.theme-dark #nice ul li {
+    color: #333333;
+}
+
+.theme-dark #nice ol li {
+    color: #333333;
+}
+
+.theme-dark #nice table {
+    border: 1px solid #e2e8f0;
+}
+
+.theme-dark #nice table th {
+    background: #f8fafc;
+    color: #2b6cb0;
+    border: 1px solid #e2e8f0;
+}
+
+.theme-dark #nice table td {
+    border: 1px solid #e2e8f0;
+    color: #333333;
+}
+
+.theme-dark #nice table tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+.theme-dark #nice a {
+    color: #2b6cb0;
+    border-bottom: 1px solid rgba(43, 108, 176, 0.5);
+    opacity: 0.9;
+}
+
+.theme-dark #nice a:hover {
+    opacity: 1;
+    border-bottom-color: #2b6cb0;
+} 

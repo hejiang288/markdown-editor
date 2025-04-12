@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用说明 - Markdown编辑器</title>
+    
+    <!-- 引入外部库 -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.7.2/styles/github.min.css" rel="stylesheet">
+    
+    <!-- 引入自定义CSS -->
+    <link href="css/main.css" rel="stylesheet">
+    <style>
+        .guide-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        
+        .guide-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .guide-section:last-child {
+            border-bottom: none;
+        }
+        
+        .guide-section h2 {
+            margin-top: 2rem;
+            padding-bottom: 0.5rem;
+            font-size: 1.8rem;
+            color: #1e80ff;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .guide-section h3 {
+            margin-top: 1.5rem;
+            font-size: 1.4rem;
+            color: #333;
+            padding-left: 12px;
+            border-left: 4px solid #1e80ff;
+        }
+        
+        .shortcut-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .shortcut-table th, .shortcut-table td {
+            padding: 10px;
+            border: 1px solid #eee;
+            text-align: left;
+        }
+        
+        .shortcut-table th {
+            background: #f5f7fa;
+        }
+        
+        .feature-block {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .feature-card {
+            flex: 1;
+            min-width: 250px;
+            padding: 1.5rem;
+            border-radius: 8px;
+            background: #f8f9fa;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .feature-card h4 {
+            margin-top: 0;
+            color: #1e80ff;
+            font-size: 1.2rem;
+        }
+        
+        .feature-card p {
+            margin-bottom: 0;
+            color: #555;
+        }
+        
+        .note {
+            padding: 1rem;
+            background: #f0f7ff;
+            border-left: 4px solid #1e80ff;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+        
+        .guide-image {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 8px;
+            margin: 1rem 0;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+        }
+
+        code {
+            background: #f5f7fa;
+            padding: 2px 4px;
+            border-radius: 4px;
+            color: #1e80ff;
+            font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 页眉 -->
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo">M</div>
+                <div class="logo-text">Markdown编辑器</div>
+            </div>
+            <div class="header-nav">
+                <a href="index.html">首页</a>
+                <a href="guide.html" class="active">使用说明</a>
+                <a href="about.html">关于</a>
+            </div>
+            <div class="header-right">
+                优雅的 Markdown 排版工具
+            </div>
+        </div>
+        
+        <!-- 使用说明内容 -->
+        <div class="guide-container">
+            <h1>Markdown编辑器使用说明</h1>
+            
+            <div class="guide-section">
+                <h2>1. 基本介绍</h2>
+                <p>这是一个专为中文内容创作者设计的Markdown编辑器，特别优化了微信公众号排版。您可以使用它来编写Markdown文本，实时预览效果，并复制富文本内容到微信公众号等平台。</p>
+                
+                <div class="feature-block">
+                    <div class="feature-card">
+                        <h4>多种主题</h4>
+                        <p>内置多种精美主题，适配不同类型的文章内容，特别优化了微信公众号显示效果。</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>代码高亮</h4>
+                        <p>支持多种编程语言的代码高亮，并提供多种代码块样式，让技术文章更专业美观。</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>复制导出</h4>
+                        <p>一键复制排版后的内容，可直接粘贴到微信公众号、知乎等平台，也可导出为HTML文件。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="guide-section">
+                <h2>2. 快速开始</h2>
+                
+                <h3>2.1 输入Markdown内容</h3>
+                <p>在左侧编辑区输入或粘贴Markdown文本，右侧会实时预览渲染效果。您也可以：</p>
+                <ul>
+                    <li>点击<strong>粘贴内容</strong>按钮，直接粘贴剪贴板中的内容</li>
+                    <li>拖放Markdown或文本文件到编辑区</li>
+                    <li>复制粘贴HTML内容，会自动转换为Markdown格式</li>
+                </ul>
+                
+                <h3>2.2 主题风格</h3>
+                <p>编辑器提供了多种主题风格，让您在不同场景下拥有最合适的排版：</p>
+                <ul>
+                    <li><strong>默认主题(蓝色科技风)</strong> - 现代化的技术文档风格，适合技术博客</li>
+                    <li><strong>简约商务风</strong> - 专业简约的商务风格，适合工作文档</li>
+                    <li><strong>暗色科技风</strong> - 护眼暗色调，适合夜间阅读</li>
+                    <li><strong>优雅暗色主题</strong> - 高对比度的暗色系，凸显内容层次</li>
+                    <li><strong>MDNice主题</strong> - 类似于MDNice网站的经典风格</li>
+                    <li><strong>自然绿色主题</strong> - 清新自然的配色，舒适宜人</li>
+                    <li><strong>学术论文主题</strong> - 严谨规范的学术排版，支持论文格式</li>
+                    <li><strong>极简风格主题</strong> - 简约至上，去除多余装饰，专注内容</li>
+                    <li><strong>中文传统排版主题</strong> - 符合中文阅读习惯的传统排版，自动首行缩进</li>
+                    <li><strong>杂志风格主题</strong> - 模拟杂志排版样式，精致优雅</li>
+                    <li><strong>鲜艳对比主题</strong> - 强烈的黑黄红配色，粗犷大胆的排版风格，适合创意内容</li>
+                </ul>
+                <p>切换主题时，已有的内容将自动应用新主题样式，无需重新编辑。</p>
+                
+                <h3>2.3 代码块样式</h3>
+                <p>针对代码块，我们提供了独立于主题的代码样式选择：</p>
+                <ul>
+                    <li><strong>默认样式</strong> - 简洁清晰的基础代码展示</li>
+                    <li><strong>现代简约风格</strong> - 简约现代的代码高亮</li>
+                    <li><strong>科技感风格</strong> - 具有科技感的深色代码块</li>
+                    <li><strong>Mac窗口风格</strong> - 模拟Mac终端窗口的代码块样式，带有窗口控制按钮和仿真系统UI</li>
+                </ul>
+                <p>代码块样式可以与任何主题搭配使用，帮助您呈现最佳的代码阅读体验。</p>
+                
+                <h3>2.4 复制和导出</h3>
+                <p>内容编辑完成后，可以：</p>
+                <ul>
+                    <li><strong>复制HTML</strong>: 点击"复制HTML"按钮，获取排版后的HTML代码，可直接粘贴到微信公众号等支持HTML的平台</li>
+                    <li><strong>下载HTML</strong>: 将排版结果下载为HTML文件，便于存档或线下使用</li>
+                </ul>
+                
+                <h3>2.5 特别说明</h3>
+                <p>通过"复制HTML"获取的内容已针对微信公众号做了特别优化，直接粘贴即可获得最佳排版效果。</p>
+            </div>
+            
+            <div class="guide-section">
+                <h2>3. Markdown语法指南</h2>
+                
+                <h3>3.1 基础语法</h3>
+                <table class="shortcut-table">
+                    <tr>
+                        <th>元素</th>
+                        <th>Markdown语法</th>
+                    </tr>
+                    <tr>
+                        <td>标题</td>
+                        <td><code># 一级标题</code><br><code>## 二级标题</code><br><code>### 三级标题</code></td>
+                    </tr>
+                    <tr>
+                        <td>粗体</td>
+                        <td><code>**粗体文本**</code></td>
+                    </tr>
+                    <tr>
+                        <td>斜体</td>
+                        <td><code>*斜体文本*</code></td>
+                    </tr>
+                    <tr>
+                        <td>链接</td>
+                        <td><code>[链接文本](https://example.com)</code></td>
+                    </tr>
+                    <tr>
+                        <td>图片</td>
+                        <td><code>![alt文本](图片地址)</code></td>
+                    </tr>
+                    <tr>
+                        <td>引用</td>
+                        <td><code>> 引用内容</code></td>
+                    </tr>
+                </table>
+                
+                <h3>3.2 列表</h3>
+                <table class="shortcut-table">
+                    <tr>
+                        <th>类型</th>
+                        <th>Markdown语法</th>
+                    </tr>
+                    <tr>
+                        <td>无序列表</td>
+                        <td><code>- 列表项</code><br><code>* 列表项</code><br><code>+ 列表项</code></td>
+                    </tr>
+                    <tr>
+                        <td>有序列表</td>
+                        <td><code>1. 列表项</code><br><code>2. 列表项</code><br><code>3. 列表项</code></td>
+                    </tr>
+                </table>
+                
+                <h3>3.3 代码</h3>
+                <table class="shortcut-table">
+                    <tr>
+                        <th>类型</th>
+                        <th>Markdown语法</th>
+                    </tr>
+                    <tr>
+                        <td>行内代码</td>
+                        <td><code>`行内代码`</code></td>
+                    </tr>
+                    <tr>
+                        <td>代码块</td>
+                        <td><code>```语言名称<br>代码内容<br>```</code></td>
+                    </tr>
+                </table>
+                
+                <h3>3.4 表格</h3>
+                <p>创建表格的语法如下：</p>
+                <pre><code>| 表头1 | 表头2 | 表头3 |
+|-------|-------|-------|
+| 单元格 | 单元格 | 单元格 |
+| 单元格 | 单元格 | 单元格 |</code></pre>
+            </div>
+            
+            <div class="guide-section">
+                <h2>4. 特色功能</h2>
+                
+                <h3>4.1 HTML转Markdown</h3>
+                <p>当您从网页或其他富文本编辑器复制内容时，编辑器会自动将HTML转换为Markdown格式。这对于从网站文章、Word文档等转换内容特别有用。</p>
+                
+                <h3>4.2 微信公众号优化</h3>
+                <p>所有主题都针对微信公众号进行了优化，确保粘贴到公众号编辑器后保持良好的排版效果。特别优化了以下内容：</p>
+                <ul>
+                    <li>代码块样式和高亮</li>
+                    <li>引用块样式</li>
+                    <li>标题层级和样式</li>
+                    <li>列表缩进和间距</li>
+                </ul>
+                
+                <h3>4.3 快捷键</h3>
+                <table class="shortcut-table">
+                    <tr>
+                        <th>功能</th>
+                        <th>快捷键</th>
+                    </tr>
+                    <tr>
+                        <td>粗体</td>
+                        <td>Ctrl+B</td>
+                    </tr>
+                    <tr>
+                        <td>斜体</td>
+                        <td>Ctrl+I</td>
+                    </tr>
+                    <tr>
+                        <td>链接</td>
+                        <td>Ctrl+K</td>
+                    </tr>
+                    <tr>
+                        <td>保存</td>
+                        <td>Ctrl+S</td>
+                    </tr>
+                    <tr>
+                        <td>预览</td>
+                        <td>Ctrl+P</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="guide-section">
+                <h2>5. 常见问题</h2>
+                
+                <h3>5.1 复制到微信公众号后样式丢失？</h3>
+                <p>确保使用"复制HTML"按钮复制内容，而不是直接从编辑区复制。如果仍有问题，尝试使用"暗色科技风"或"MDNice"主题，这些主题对微信公众号兼容性更好。</p>
+                
+                <h3>5.2 如何插入图片？</h3>
+                <p>编辑器支持多种方式插入图片：</p>
+                <ul>
+                    <li><strong>剪贴板粘贴</strong> - 直接从剪贴板粘贴图片（例如，截图后按 Ctrl+V），编辑器会自动插入图片</li>
+                    <li><strong>Markdown 语法</strong> - 使用 <code>![描述](图片链接)</code> 插入在线图片</li>
+                    <li><strong>建议</strong> - 对于需要长期保存的文档，建议先将图片上传到图床获取永久链接，然后使用Markdown语法插入</li>
+                </ul>
+                <div class="note">
+                    <p><strong>注意：</strong>直接粘贴的图片使用base64编码存储，可能会导致文档体积增大。编辑器会自动压缩超过1MB的图片，减小文件体积和加快加载速度。对于需要分享或保存的内容，仍建议使用图床链接。</p>
+                </div>
+                
+                <h3>5.3 支持的代码语言有哪些？</h3>
+                <p>编辑器支持几乎所有主流编程语言的代码高亮，包括但不限于：JavaScript、Python、Java、C++、Go、PHP、HTML、CSS、SQL、Bash等。使用时只需在代码块语言标识处指定相应语言名称。</p>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <div class="footer">
+            <p>© 2024 Markdown编辑器 | 优雅的排版工具 | 
+                <a href="https://github.com/markdown-editor" target="_blank" rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>GitHub
+                </a>
+            </p>
+        </div>
+    </div>
+</body>
+</html> 
