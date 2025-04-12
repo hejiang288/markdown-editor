@@ -157,20 +157,35 @@ function setupClipboardHandling() {
     editor.getWrapperElement().addEventListener('keydown', function(e) {
         // 检测Ctrl+V组合键
         if (e.ctrlKey && e.key === 'v') {
-            // 获取剪贴板内容（通过setTimeout确保粘贴事件正常触发后再处理）
-            setTimeout(function() {
-                if (window.lastPasteNeedsCleanup) {
-                    fixEscapedCharacters();
-                    window.lastPasteNeedsCleanup = false;
-                }
-            }, 10);
+            // 阻止默认的编辑器粘贴行为
+            e.stopPropagation();
+            e.preventDefault();
+            
+            // 直接使用clipboard API获取纯文本内容
+            navigator.clipboard.readText()
+                .then(text => {
+                    // 直接插入内容，不经过CodeMirror的默认粘贴处理
+                    editor.replaceSelection(text);
+                    
+                    // 立即更新预览
+                    setTimeout(function() {
+                        previewMarkdown();
+                    }, 10);
+                })
+                .catch(err => {
+                    console.error('无法访问剪贴板:', err);
+                    // 如果访问剪贴板失败，允许原生粘贴行为
+                    document.execCommand('paste');
+                });
+            
+            return false;
         }
-    });
+    }, true);
 
-    // 监听编辑器区域的粘贴事件
+    // 监听编辑器区域的粘贴事件 - 仅用于其他方式的粘贴（非Ctrl+V）
     editor.on('paste', function(cm, e) {
-        // 如果这是从右键菜单触发的粘贴，不处理，因为我们有专门的处理程序
-        if (window.rightClickPasteActive) {
+        // Ctrl+V已经被上面的事件处理了，此处处理右键菜单粘贴等
+        if (window.ctrlVPasteActive) {
             return;
         }
         
@@ -206,7 +221,6 @@ function setupClipboardHandling() {
                 
                 const markdown = turndownService.turndown(html);
                 cm.replaceSelection(markdown);
-                window.lastPasteNeedsCleanup = true; // 标记可能需要清理
                 return;
             }
         }
@@ -218,7 +232,6 @@ function setupClipboardHandling() {
             
             // 直接插入文本，不做任何转义处理
             cm.replaceSelection(text);
-            window.lastPasteNeedsCleanup = true; // 标记可能需要清理
             return;
         }
     });
@@ -262,18 +275,13 @@ function setupClipboardHandling() {
     // 为编辑器添加额外的粘贴监听器，捕获通过右键菜单的粘贴
     const editorElement = editor.getWrapperElement();
     editorElement.addEventListener('input', function(e) {
-        // 如果输入是由粘贴引起的（Ctrl+V或右键菜单粘贴）
+        // 如果输入是由粘贴引起的（右键菜单粘贴）
         if (e.inputType === 'insertFromPaste') {
-            // 防止CodeMirror对特殊字符进行转义
-            // 我们无法直接修改已粘贴的内容，但可以标记下次调整
-            window.lastPasteNeedsCleanup = true;
-            
+            // 标记此次粘贴操作是正常文本粘贴，不需要处理转义
             // 在下一个事件循环中尝试修复内容
             setTimeout(function() {
-                if (window.lastPasteNeedsCleanup) {
-                    fixEscapedCharacters();
-                    window.lastPasteNeedsCleanup = false;
-                }
+                // 立即更新预览，不再尝试修复转义字符
+                previewMarkdown();
             }, 0);
         }
     });
