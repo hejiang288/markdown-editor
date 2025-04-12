@@ -33,6 +33,9 @@ function initApp() {
     
     // 自动预览初始内容
     previewMarkdown();
+    
+    // 初始调整编辑器高度
+    setTimeout(adjustEditorHeight, 300);
 }
 
 // 添加节流函数
@@ -61,10 +64,14 @@ function initializeEditor() {
         theme: 'monokai',
         lineNumbers: true,
         lineWrapping: true,
+        viewportMargin: Infinity, // 确保编辑器高度自适应内容
         extraKeys: {
             "Enter": "newlineAndIndentContinueMarkdownList",
-            "Ctrl-V": function(cm) {
-                // 默认行为会由事件监听器处理
+            "Ctrl-A": function(cm) {
+                // 阻止默认的全选行为，改为只选中编辑器内容
+                cm.execCommand("selectAll");
+                // 阻止事件冒泡
+                return false;
             }
         },
         tabSize: 2
@@ -72,6 +79,32 @@ function initializeEditor() {
 
     // 监听编辑器变化，使用节流函数
     editor.on('change', throttledPreview);
+    
+    // 自动调整编辑器高度
+    editor.on('change', function() {
+        adjustEditorHeight();
+    });
+    
+    // 确保编辑器获得焦点，便于操作
+    setTimeout(() => editor.focus(), 500);
+    
+    // 添加额外的键盘事件处理
+    preventDefaultShortcuts();
+}
+
+// 调整编辑器高度
+function adjustEditorHeight() {
+    const content = editor.getValue();
+    const lineCount = content.split('\n').length;
+    
+    // 最小高度为500px，每行加大约20px
+    const editorHeight = Math.max(500, lineCount * 20 + 100);
+    
+    const editorElement = editor.getWrapperElement();
+    editorElement.style.height = editorHeight + 'px';
+    
+    // 重新计算编辑器尺寸
+    editor.refresh();
 }
 
 // 设置拖放功能
@@ -120,7 +153,27 @@ function setupDragAndDrop() {
 
 // 设置剪贴板处理
 function setupClipboardHandling() {
+    // 添加对Ctrl+V的特殊支持
+    editor.getWrapperElement().addEventListener('keydown', function(e) {
+        // 检测Ctrl+V组合键
+        if (e.ctrlKey && e.key === 'v') {
+            // 获取剪贴板内容（通过setTimeout确保粘贴事件正常触发后再处理）
+            setTimeout(function() {
+                if (window.lastPasteNeedsCleanup) {
+                    fixEscapedCharacters();
+                    window.lastPasteNeedsCleanup = false;
+                }
+            }, 10);
+        }
+    });
+
+    // 监听编辑器区域的粘贴事件
     editor.on('paste', function(cm, e) {
+        // 如果这是从右键菜单触发的粘贴，不处理，因为我们有专门的处理程序
+        if (window.rightClickPasteActive) {
+            return;
+        }
+        
         const clipboardData = e.clipboardData || window.clipboardData;
         
         // 处理粘贴图片
@@ -153,13 +206,161 @@ function setupClipboardHandling() {
                 
                 const markdown = turndownService.turndown(html);
                 cm.replaceSelection(markdown);
+                window.lastPasteNeedsCleanup = true; // 标记可能需要清理
                 return;
             }
         }
         
-        // 如果没有HTML或无法转换，使用纯文本
-        // 默认行为会处理纯文本粘贴
+        // 处理纯文本粘贴 - 修复特殊字符转义问题
+        const text = clipboardData.getData('text/plain');
+        if (text) {
+            e.preventDefault(); // 阻止默认粘贴行为
+            
+            // 直接插入文本，不做任何转义处理
+            cm.replaceSelection(text);
+            window.lastPasteNeedsCleanup = true; // 标记可能需要清理
+            return;
+        }
     });
+    
+    // 拦截全局的粘贴事件
+    document.addEventListener('paste', function(e) {
+        // 检查焦点是否在编辑器中
+        if (editor && editor.hasFocus()) {
+            // 已经通过编辑器的paste事件处理了
+            return;
+        }
+        
+        // 如果是从右键菜单粘贴到编辑器，需要特殊处理
+        const activeElement = document.activeElement;
+        if (activeElement && activeElement.closest('.CodeMirror')) {
+            const clipboardData = e.clipboardData || window.clipboardData;
+            const text = clipboardData.getData('text/plain');
+            if (text) {
+                e.preventDefault();
+                editor.replaceSelection(text);
+                previewMarkdown();
+            }
+        }
+    });
+    
+    // 监听全局的右键菜单事件
+    document.addEventListener('contextmenu', function(e) {
+        const element = e.target;
+        // 检查右键点击是否在编辑器内
+        if (element && element.closest('.CodeMirror')) {
+            // 标记右键菜单激活状态
+            window.rightClickPasteActive = true;
+            
+            // 设置一个超时来在粘贴操作后重置状态
+            setTimeout(function() {
+                window.rightClickPasteActive = false;
+            }, 5000); // 给足够的时间进行右键粘贴
+        }
+    });
+    
+    // 为编辑器添加额外的粘贴监听器，捕获通过右键菜单的粘贴
+    const editorElement = editor.getWrapperElement();
+    editorElement.addEventListener('input', function(e) {
+        // 如果输入是由粘贴引起的（Ctrl+V或右键菜单粘贴）
+        if (e.inputType === 'insertFromPaste') {
+            // 防止CodeMirror对特殊字符进行转义
+            // 我们无法直接修改已粘贴的内容，但可以标记下次调整
+            window.lastPasteNeedsCleanup = true;
+            
+            // 在下一个事件循环中尝试修复内容
+            setTimeout(function() {
+                if (window.lastPasteNeedsCleanup) {
+                    fixEscapedCharacters();
+                    window.lastPasteNeedsCleanup = false;
+                }
+            }, 0);
+        }
+    });
+}
+
+// 修复转义字符
+function fixEscapedCharacters() {
+    try {
+        // 获取当前光标位置
+        const cursor = editor.getCursor();
+        
+        // 查找粘贴的文本范围 - 多行粘贴处理
+        // 首先检查当前行
+        let currentLine = editor.getLine(cursor.line);
+        let startLine = cursor.line;
+        let endLine = cursor.line;
+        
+        // 向上查找可能被粘贴影响的行
+        while (startLine > 0) {
+            const prevLine = editor.getLine(startLine - 1);
+            // 如果有大量转义符号，认为这行也是粘贴的一部分
+            if (prevLine && (prevLine.includes('\\[') || prevLine.includes('\\]') || 
+                prevLine.includes('\\(') || prevLine.includes('\\)') || 
+                prevLine.includes('\\!') || prevLine.includes('\\#'))) {
+                startLine--;
+            } else {
+                break;
+            }
+        }
+        
+        // 向下查找可能被粘贴影响的行
+        const lineCount = editor.lineCount();
+        while (endLine < lineCount - 1) {
+            const nextLine = editor.getLine(endLine + 1);
+            // 如果有大量转义符号，认为这行也是粘贴的一部分
+            if (nextLine && (nextLine.includes('\\[') || nextLine.includes('\\]') || 
+                nextLine.includes('\\(') || nextLine.includes('\\)') || 
+                nextLine.includes('\\!') || nextLine.includes('\\#'))) {
+                endLine++;
+            } else {
+                break;
+            }
+        }
+        
+        // 处理粘贴文本范围内的所有行
+        let anyChanges = false;
+        for (let i = startLine; i <= endLine; i++) {
+            const line = editor.getLine(i);
+            
+            // 检查常见的被错误转义的Markdown字符
+            const fixed = line
+                .replace(/\\\[/g, '[')
+                .replace(/\\\]/g, ']')
+                .replace(/\\\(/g, '(')
+                .replace(/\\\)/g, ')')
+                .replace(/\\!/g, '!')
+                .replace(/\\#/g, '#')
+                .replace(/\\\*/g, '*')
+                .replace(/\\_/g, '_')
+                .replace(/\\`/g, '`')
+                .replace(/\\>/g, '>')
+                .replace(/\\\|/g, '|')
+                .replace(/\\-/g, '-')
+                .replace(/\\\+/g, '+')
+                .replace(/\\\./g, '.')
+                .replace(/\\=/g, '=')
+                .replace(/\\\{/g, '{')
+                .replace(/\\\}/g, '}')
+                .replace(/\\\\/g, '\\');
+            
+            // 如果内容有变化，替换当前行
+            if (fixed !== line) {
+                // 替换当前行内容
+                const from = {line: i, ch: 0};
+                const to = {line: i, ch: line.length};
+                editor.replaceRange(fixed, from, to);
+                anyChanges = true;
+            }
+        }
+        
+        // 如果有修改，更新预览
+        if (anyChanges) {
+            previewMarkdown();
+        }
+    } catch (error) {
+        console.error('修复转义字符失败:', error);
+    }
 }
 
 // 处理粘贴的图片
@@ -450,8 +651,33 @@ function pasteFullContent() {
     try {
         navigator.clipboard.readText()
             .then(text => {
+                // 存储原始光标位置
+                const originalCursor = editor.getCursor();
+                
+                // 先清空编辑器再插入，以避免和现有内容混合
                 editor.setValue(text);
-                previewMarkdown();
+                
+                // 标记可能需要清理转义字符
+                window.lastPasteNeedsCleanup = true;
+                
+                // 延迟修复转义字符，确保内容已完全更新
+                setTimeout(function() {
+                    if (window.lastPasteNeedsCleanup) {
+                        fixEscapedCharacters();
+                        window.lastPasteNeedsCleanup = false;
+                        // 更新预览
+                        previewMarkdown();
+                    }
+                }, 10);
+                
+                // 尝试恢复光标位置，如果位置有效
+                if (originalCursor.line < editor.lineCount()) {
+                    editor.setCursor(originalCursor);
+                } else {
+                    // 设置到文档末尾
+                    editor.setCursor(editor.lineCount(), 0);
+                }
+                
                 showToast('内容已粘贴');
             })
             .catch(err => {
@@ -600,4 +826,43 @@ function setupImageLazyLoad() {
             }
         };
     }
+}
+
+// 防止默认快捷键行为
+function preventDefaultShortcuts() {
+    // 获取编辑器元素
+    const editorElement = editor.getWrapperElement();
+    
+    // 捕获阶段添加事件监听器，这样能在事件到达文档前处理
+    editorElement.addEventListener('keydown', function(e) {
+        // 检查是否是编辑器获得焦点时的Ctrl+A
+        if (e.ctrlKey && e.key === 'a' && editor.hasFocus()) {
+            // 阻止默认行为
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // 手动执行编辑器的全选命令
+            editor.execCommand('selectAll');
+            return false;
+        }
+    }, true);  // true表示在捕获阶段处理，这很重要
+    
+    // 处理编辑器点击，确保点击后能正确处理快捷键
+    editorElement.addEventListener('click', function(e) {
+        // 确保编辑器获得焦点
+        if (!editor.hasFocus()) {
+            editor.focus();
+        }
+    });
+    
+    // 处理编辑器区域以外的点击，以便正确处理光标状态
+    document.addEventListener('click', function(e) {
+        // 检查点击是否在编辑器区域外
+        if (!editorElement.contains(e.target) && !e.target.closest('.toolbar')) {
+            // 如果在编辑器外点击，但不是在工具栏上，则清除编辑器选择
+            if (editor.hasFocus()) {
+                editor.setCursor(editor.getCursor());
+            }
+        }
+    });
 } 
