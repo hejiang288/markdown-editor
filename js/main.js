@@ -31,11 +31,28 @@ function initApp() {
     setupClipboardHandling();
     setupImageLazyLoad();
     
+    // 设置示例内容（如果有）
+    setupInitialContent();
+    
     // 自动预览初始内容
     previewMarkdown();
     
     // 初始调整编辑器高度
     setTimeout(adjustEditorHeight, 300);
+}
+
+// 设置初始示例内容
+function setupInitialContent() {
+    // 检查是否有全局示例内容变量
+    if (window.exampleMarkdown) {
+        editor.setValue(window.exampleMarkdown);
+    } else if (document.getElementById('example-content')) {
+        // 或者尝试从页面获取示例内容
+        const exampleContent = document.getElementById('example-content').textContent;
+        if (exampleContent && exampleContent.trim()) {
+            editor.setValue(exampleContent.trim());
+        }
+    }
 }
 
 // 添加节流函数
