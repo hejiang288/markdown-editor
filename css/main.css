@@ -201,6 +201,15 @@ body {
     min-height: 500px;
 }
 
+/* 确保预览区域图片不超出容器 */
+#nice img {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block;
+    margin: 10px auto;
+    object-fit: contain;
+}
+
 /* 工具栏 */
 .toolbar {
     padding: 15px 20px;
