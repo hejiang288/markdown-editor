@@ -1,15 +1,13 @@
 /**
- * 主题和代码样式加载器
+ * 主题加载器
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    // 初始化主题和代码样式
+    // 初始化主题
     changeTheme();
-    changeCodeStyle();
     
     // 绑定选择器变化事件
     document.getElementById('theme').addEventListener('change', changeTheme);
-    document.getElementById('code-style').addEventListener('change', changeCodeStyle);
 });
 
 // 更改主题
@@ -39,32 +37,10 @@ function changeTheme() {
         // 添加选中的主题类
         container.classList.add('theme-' + theme);
         
-        // 更换主题CSS文件 - 主题更改不需要立即更新预览，避免多次渲染
-        changeCssFile('theme-css', `css/themes/${theme}.css`, false);
+        // 更换主题CSS文件
+        changeCssFile('theme-css', `css/themes/${theme}.css`, true);
     } catch (error) {
         console.error('更改主题失败:', error);
-    }
-}
-
-// 更改代码样式
-function changeCodeStyle() {
-    try {
-        const style = document.getElementById('code-style').value;
-        const preview = document.getElementById('nice');
-        
-        // 移除所有代码块样式类
-        preview.classList.remove('code-style-default', 'code-style-modern', 'code-style-tech', 'code-style-mac');
-        
-        // 添加选中的样式类
-        preview.classList.add('code-style-' + style);
-        
-        // 更换代码样式CSS文件 - 代码样式更改后需要重新高亮代码块
-        changeCssFile('code-style-css', `css/code-styles/${style}.css`, true);
-        
-        // 添加一个全局变量，记录最后一次代码样式变更时间，用于复制功能判断
-        window.lastCodeStyleChange = new Date().getTime();
-    } catch (error) {
-        console.error('更改代码样式失败:', error);
     }
 }
 
@@ -93,16 +69,15 @@ function changeCssFile(id, href, updatePreviewAfterLoad = true) {
         console.log(`CSS文件加载完成: ${href}`);
         // 如果有预览内容，在CSS加载完成后更新预览
         if (updatePreviewAfterLoad && typeof previewMarkdown === 'function') {
-            // 强制重新应用代码高亮
-            if (id === 'code-style-css' && typeof hljs !== 'undefined') {
-                setTimeout(function() {
+            // 需要刷新预览以应用新主题
+            setTimeout(function() {
+                if (typeof hljs !== 'undefined') {
                     document.querySelectorAll('pre code').forEach((block) => {
                         hljs.highlightBlock(block);
                     });
-                }, 100);
-            } else {
+                }
                 previewMarkdown();
-            }
+            }, 100);
         }
     };
     
@@ -115,5 +90,4 @@ function changeCssFile(id, href, updatePreviewAfterLoad = true) {
 }
 
 // 导出公共函数
-window.changeTheme = changeTheme;
-window.changeCodeStyle = changeCodeStyle; 
+window.changeTheme = changeTheme; 
