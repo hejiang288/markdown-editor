@@ -30,7 +30,7 @@
                 <img src="images/logo.svg" alt="Markdown编辑器" class="logo-image" height="40">
             </div>
             <div class="header-nav">
-                <a href="./" class="active">首页</a>
+                <a href="index.html" class="active">首页</a>
                 <a href="guide.html">使用说明</a>
                 <a href="about.html">关于</a>
             </div>
@@ -57,7 +57,7 @@
             </select>
             
             <div class="toolbar">
-                <button onclick="clearContent()" id="clear-button" style="display: none; visibility: hidden;">
+                <button onclick="clearContent()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3-3h6M6 6h12"></path>
                     </svg>
@@ -80,7 +80,7 @@
                     预览
                 </button>
                 
-                <button onclick="copyContent()" id="copy-button" style="display: none; visibility: hidden;">
+                <button onclick="copyContent()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                         <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -109,7 +109,7 @@
 
             <!-- 预览区域 -->
             <div class="preview-section">
-                <div id="nice"></div>
+                <div id="nice" class="code-style-default"></div>
             </div>
         </div>
 
