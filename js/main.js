@@ -655,17 +655,16 @@ function downloadHTML() {
     const preview = document.getElementById('preview-container');
     const previewContent = preview.innerHTML;
     
-    // 获取当前主题和代码样式
+    // 获取当前主题
     const theme = document.getElementById('theme').value;
-    const codeStyle = document.getElementById('code-style').value;
     
     // 创建临时容器，应用最新样式
     const tempContainer = document.createElement('div');
     tempContainer.innerHTML = previewContent;
     tempContainer.id = 'content';
-    tempContainer.className = `theme-${theme} code-style-${codeStyle}`;
+    tempContainer.className = `theme-${theme}`;
     
-    // 查找所有代码块并应用当前代码样式
+    // 查找所有代码块
     const codeBlocks = tempContainer.querySelectorAll('pre code');
     codeBlocks.forEach(block => {
         if (block.classList.contains('hljs')) {
@@ -714,15 +713,13 @@ ${exportCSS}
 // 获取导出用的CSS
 function getExportCSS() {
     const theme = document.getElementById('theme').value;
-    const codeStyle = document.getElementById('code-style').value;
     
     // 检查缓存中是否已存在相同配置的CSS
-    const cacheKey = `${theme}-${codeStyle}`;
-    if (cachedExportCSS[cacheKey]) {
-        return cachedExportCSS[cacheKey];
+    if (cachedExportCSS[theme]) {
+        return cachedExportCSS[theme];
     }
     
-    // 收集当前选择的主题和代码样式
+    // 收集当前选择的主题
     let css = '';
     
     // 从页面中提取当前主题的CSS
@@ -736,20 +733,6 @@ function getExportCSS() {
         })
         .flatMap(sheet => Array.from(sheet.cssRules))
         .filter(rule => rule.selectorText && rule.selectorText.includes(`.theme-${theme}`))
-        .map(rule => rule.cssText)
-        .join('\n');
-    
-    // 从页面中提取当前代码样式的CSS
-    const codeStyles = Array.from(document.styleSheets)
-        .filter(sheet => {
-            try {
-                return sheet.cssRules;
-            } catch (e) {
-                return false;
-            }
-        })
-        .flatMap(sheet => Array.from(sheet.cssRules))
-        .filter(rule => rule.selectorText && rule.selectorText.includes(`.code-style-${codeStyle}`))
         .map(rule => rule.cssText)
         .join('\n');
     
@@ -827,14 +810,13 @@ function getExportCSS() {
         }
     `;
     
-    // 添加主题、代码样式和highlight.js样式
-    css += themeStyles + '\n' + codeStyles + '\n' + highlightStyles;
+    // 添加主题和highlight.js样式
+    css += themeStyles + '\n' + highlightStyles;
     
-    // 确保应用当前选中的代码风格类到content元素
+    // 确保应用当前选中的主题类到content元素
     css += `
         #content {
             ${theme ? `--theme: ${theme};` : ''}
-            ${codeStyle ? `--code-style: ${codeStyle};` : ''}
         }
         #content pre code {
             /* 确保导出时代码样式一致 */
@@ -843,7 +825,7 @@ function getExportCSS() {
     `;
     
     // 缓存结果并返回
-    cachedExportCSS[cacheKey] = css;
+    cachedExportCSS[theme] = css;
     return css;
 }
 
