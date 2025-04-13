@@ -67,15 +67,10 @@ body {
 @media screen and (max-width: 768px) {
     .container {
         padding: 0.5rem;
-        gap: 0.5rem;
     }
-
+    
     .main-content {
         flex-direction: column;
-        min-height: auto;
-    }
-
-    .editor-section, .preview-section {
         min-height: auto;
     }
     
@@ -87,10 +82,6 @@ body {
         flex-direction: column;
         align-items: stretch;
         gap: 0.5rem;
-    }
-
-    .code-style-selector {
-        margin-left: 0;
     }
 
     .toolbar {
@@ -338,29 +329,6 @@ body {
 .theme-selector select:focus {
     border-color: #1e80ff;
     box-shadow: 0 0 0 2px rgba(30,128,255,0.1);
-}
-
-/* 代码块样式选择器 */
-.code-style-selector {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.code-style-selector select {
-    padding: 6px 12px;
-    border: 1px solid #e4e6eb;
-    border-radius: 6px;
-    font-size: 14px;
-    color: #333;
-    background: #fff;
-    cursor: pointer;
-    outline: none;
-    transition: all 0.3s ease;
-}
-
-.code-style-selector select:hover {
-    border-color: #1e80ff;
 }
 
 /* 页眉样式 */
