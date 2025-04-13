@@ -1,62 +1,72 @@
 /**
- * 主题加载器
+ * 主题和代码样式加载器
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    // 设置主题切换事件监听器
-    document.getElementById('theme').addEventListener('change', function() {
-        changeTheme(this.value);
-    });
+    // 初始化主题和代码样式
+    changeTheme();
+    changeCodeStyle();
     
-    // 初始化主题
-    const initialTheme = document.getElementById('theme').value;
-    changeTheme(initialTheme);
+    // 绑定选择器变化事件
+    document.getElementById('theme').addEventListener('change', changeTheme);
+    document.getElementById('code-style').addEventListener('change', changeCodeStyle);
 });
 
-// 切换主题
-function changeTheme(theme) {
-    // 更新主题CSS链接
-    const themeCssLink = document.getElementById('theme-css');
-    themeCssLink.href = `css/themes/${theme}.css`;
-    
-    // 更新容器类
-    const container = document.querySelector('.container');
-    
-    // 移除所有主题类
-    const themeClasses = container.className.split(' ').filter(c => !c.startsWith('theme-'));
-    container.className = themeClasses.join(' ');
-    
-    // 添加新主题类
-    container.classList.add(`theme-${theme}`);
-    
-    // 更新预览
-    if (typeof previewMarkdown === 'function') {
-        previewMarkdown();
-    }
-    
-    // 保存到本地存储
+// 更改主题
+function changeTheme() {
     try {
-        localStorage.setItem('preferred-theme', theme);
-    } catch (e) {
-        console.warn('无法保存主题首选项到本地存储');
+        const theme = document.getElementById('theme').value;
+        const container = document.querySelector('.container');
+        
+        // 移除所有主题类
+        container.classList.remove(
+            'theme-default', 
+            'theme-business', 
+            'theme-dark', 
+            'theme-elegant', 
+            'theme-mdnice', 
+            'theme-mdnice2', 
+            'theme-mdnice3', 
+            'theme-mdnice4',
+            'theme-nature',
+            'theme-academic',
+            'theme-minimal',
+            'theme-chinese',
+            'theme-magazine',
+            'theme-contrast'
+        );
+        
+        // 添加选中的主题类
+        container.classList.add('theme-' + theme);
+        
+        // 更换主题CSS文件 - 主题更改不需要立即更新预览，避免多次渲染
+        changeCssFile('theme-css', `css/themes/${theme}.css`, false);
+    } catch (error) {
+        console.error('更改主题失败:', error);
     }
 }
 
-// 加载用户偏好
-function loadUserPreferences() {
+// 更改代码样式
+function changeCodeStyle() {
     try {
-        const savedTheme = localStorage.getItem('preferred-theme');
-        if (savedTheme) {
-            document.getElementById('theme').value = savedTheme;
-            changeTheme(savedTheme);
-        }
-    } catch (e) {
-        console.warn('无法从本地存储加载偏好设置');
+        const style = document.getElementById('code-style').value;
+        const preview = document.getElementById('nice');
+        
+        // 移除所有代码块样式类
+        preview.classList.remove('code-style-default', 'code-style-modern', 'code-style-tech', 'code-style-mac');
+        
+        // 添加选中的样式类
+        preview.classList.add('code-style-' + style);
+        
+        // 更换代码样式CSS文件 - 代码样式更改后需要重新高亮代码块
+        changeCssFile('code-style-css', `css/code-styles/${style}.css`, true);
+        
+        // 添加一个全局变量，记录最后一次代码样式变更时间，用于复制功能判断
+        window.lastCodeStyleChange = new Date().getTime();
+    } catch (error) {
+        console.error('更改代码样式失败:', error);
     }
 }
-
-// 当文档加载完成时尝试加载用户偏好
-document.addEventListener('DOMContentLoaded', loadUserPreferences);
 
 // 更改CSS文件
 function changeCssFile(id, href, updatePreviewAfterLoad = true) {
@@ -83,7 +93,16 @@ function changeCssFile(id, href, updatePreviewAfterLoad = true) {
         console.log(`CSS文件加载完成: ${href}`);
         // 如果有预览内容，在CSS加载完成后更新预览
         if (updatePreviewAfterLoad && typeof previewMarkdown === 'function') {
-            previewMarkdown();
+            // 强制重新应用代码高亮
+            if (id === 'code-style-css' && typeof hljs !== 'undefined') {
+                setTimeout(function() {
+                    document.querySelectorAll('pre code').forEach((block) => {
+                        hljs.highlightBlock(block);
+                    });
+                }, 100);
+            } else {
+                previewMarkdown();
+            }
         }
     };
     
@@ -96,4 +115,5 @@ function changeCssFile(id, href, updatePreviewAfterLoad = true) {
 }
 
 // 导出公共函数
-window.changeTheme = changeTheme; 
+window.changeTheme = changeTheme;
+window.changeCodeStyle = changeCodeStyle; 
