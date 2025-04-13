@@ -24,6 +24,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// 确保清空按钮在页面完全加载后显示
+window.onload = function() {
+    setTimeout(function() {
+        const clearButton = document.getElementById('clear-button');
+        if (clearButton) {
+            clearButton.style.display = 'flex';
+        }
+    }, 1000);
+};
+
 // 应用初始化
 function initApp() {
     initializeEditor();
@@ -39,6 +49,21 @@ function initApp() {
     
     // 初始调整编辑器高度
     setTimeout(adjustEditorHeight, 300);
+    
+    // 页面完全加载后显示清空按钮
+    setTimeout(function() {
+        const clearButton = document.getElementById('clear-button');
+        if (clearButton) {
+            clearButton.style.display = 'flex';
+        }
+        
+        // 检查是否有内容，如果有则显示复制按钮
+        const copyButton = document.getElementById('copy-button');
+        if (copyButton) {
+            const content = editor.getValue().trim();
+            copyButton.style.display = content ? 'flex' : 'none';
+        }
+    }, 1000);
 }
 
 // 设置初始示例内容
@@ -502,6 +527,15 @@ function previewMarkdown() {
         preview.innerHTML = marked(content);
         preview.setAttribute('data-content', content);
         
+        // 处理图片大小限制，确保不超出预览区域
+        preview.querySelectorAll('img').forEach(img => {
+            // 添加max-width:100%样式确保图片不超出预览区域
+            img.style.maxWidth = '100%';
+            img.style.height = 'auto';
+            img.style.display = 'block';
+            img.style.margin = '10px 0';
+        });
+        
         // 高亮代码块，但先检查hljs是否已加载
         if (typeof hljs !== 'undefined') {
             document.querySelectorAll('pre code').forEach((block) => {
@@ -518,9 +552,75 @@ function previewMarkdown() {
                 }
             });
         }
+        
+        // 判断内容是否为空，控制复制按钮显示
+        const copyButton = document.getElementById('copy-button');
+        if (copyButton) {
+            if (content.trim() === '') {
+                copyButton.style.display = 'none';
+            } else {
+                // 检查是否有图片需要加载
+                const images = preview.querySelectorAll('img');
+                if (images.length > 0) {
+                    // 先隐藏复制按钮
+                    copyButton.style.display = 'none';
+                    
+                    // 创建一个计数器来跟踪已加载的图片
+                    let loadedImages = 0;
+                    const totalImages = images.length;
+                    
+                    // 为每个图片添加加载事件
+                    images.forEach(img => {
+                        // 已经加载完成的图片
+                        if (img.complete) {
+                            loadedImages++;
+                            checkAllImagesLoaded();
+                        } else {
+                            // 监听图片加载事件
+                            img.addEventListener('load', function() {
+                                loadedImages++;
+                                checkAllImagesLoaded();
+                            });
+                            
+                            // 监听图片加载失败事件
+                            img.addEventListener('error', function() {
+                                loadedImages++;
+                                checkAllImagesLoaded();
+                            });
+                        }
+                    });
+                    
+                    // 检查是否所有图片都已加载
+                    function checkAllImagesLoaded() {
+                        if (loadedImages >= totalImages) {
+                            // 所有图片已加载完成，显示复制按钮
+                            setTimeout(() => {
+                                copyButton.style.display = 'flex';
+                            }, 300);
+                        }
+                    }
+                    
+                    // 设置超时，防止图片一直加载不完成
+                    setTimeout(() => {
+                        copyButton.style.display = 'flex';
+                    }, 15000);
+                } else {
+                    // 没有图片，直接显示复制按钮
+                    setTimeout(() => {
+                        copyButton.style.display = 'flex';
+                    }, 500);
+                }
+            }
+        }
     } catch (error) {
         console.error('预览失败:', error);
         preview.innerHTML = '<div style="color: red;">渲染出错: ' + error.message + '</div>';
+        
+        // 发生错误时隐藏复制按钮
+        const copyButton = document.getElementById('copy-button');
+        if (copyButton) {
+            copyButton.style.display = 'none';
+        }
     }
 }
 
@@ -552,19 +652,20 @@ function copyContent() {
 // 下载HTML
 function downloadHTML() {
     // 获取预览内容
-    const preview = document.getElementById('nice');
+    const preview = document.getElementById('preview-container');
     const previewContent = preview.innerHTML;
     
-    // 获取当前主题
+    // 获取当前主题和代码样式
     const theme = document.getElementById('theme').value;
+    const codeStyle = document.getElementById('code-style').value;
     
     // 创建临时容器，应用最新样式
     const tempContainer = document.createElement('div');
     tempContainer.innerHTML = previewContent;
     tempContainer.id = 'content';
-    tempContainer.className = `theme-${theme}`;
+    tempContainer.className = `theme-${theme} code-style-${codeStyle}`;
     
-    // 查找所有代码块并应用高亮
+    // 查找所有代码块并应用当前代码样式
     const codeBlocks = tempContainer.querySelectorAll('pre code');
     codeBlocks.forEach(block => {
         if (block.classList.contains('hljs')) {
@@ -613,14 +714,15 @@ ${exportCSS}
 // 获取导出用的CSS
 function getExportCSS() {
     const theme = document.getElementById('theme').value;
+    const codeStyle = document.getElementById('code-style').value;
     
     // 检查缓存中是否已存在相同配置的CSS
-    const cacheKey = `${theme}`;
+    const cacheKey = `${theme}-${codeStyle}`;
     if (cachedExportCSS[cacheKey]) {
         return cachedExportCSS[cacheKey];
     }
     
-    // 收集当前选择的主题CSS
+    // 收集当前选择的主题和代码样式
     let css = '';
     
     // 从页面中提取当前主题的CSS
@@ -634,6 +736,20 @@ function getExportCSS() {
         })
         .flatMap(sheet => Array.from(sheet.cssRules))
         .filter(rule => rule.selectorText && rule.selectorText.includes(`.theme-${theme}`))
+        .map(rule => rule.cssText)
+        .join('\n');
+    
+    // 从页面中提取当前代码样式的CSS
+    const codeStyles = Array.from(document.styleSheets)
+        .filter(sheet => {
+            try {
+                return sheet.cssRules;
+            } catch (e) {
+                return false;
+            }
+        })
+        .flatMap(sheet => Array.from(sheet.cssRules))
+        .filter(rule => rule.selectorText && rule.selectorText.includes(`.code-style-${codeStyle}`))
         .map(rule => rule.cssText)
         .join('\n');
     
@@ -711,13 +827,14 @@ function getExportCSS() {
         }
     `;
     
-    // 添加主题和highlight.js样式
-    css += themeStyles + '\n' + highlightStyles;
+    // 添加主题、代码样式和highlight.js样式
+    css += themeStyles + '\n' + codeStyles + '\n' + highlightStyles;
     
-    // 确保应用当前选中的主题到content元素
+    // 确保应用当前选中的代码风格类到content元素
     css += `
         #content {
             ${theme ? `--theme: ${theme};` : ''}
+            ${codeStyle ? `--code-style: ${codeStyle};` : ''}
         }
         #content pre code {
             /* 确保导出时代码样式一致 */
@@ -764,6 +881,11 @@ function pasteFullContent() {
                 }
                 
                 showToast('内容已粘贴');
+                
+                // 确保预览更新并显示复制按钮
+                setTimeout(() => {
+                    previewMarkdown();
+                }, 300);
             })
             .catch(err => {
                 console.error('无法访问剪贴板:', err);
@@ -781,6 +903,12 @@ function clearContent() {
     editor.setValue('');
     previewMarkdown();
     showToast('内容已清空');
+    
+    // 清空内容时隐藏复制按钮
+    const copyButton = document.getElementById('copy-button');
+    if (copyButton) {
+        copyButton.style.display = 'none';
+    }
 }
 
 // 显示操作反馈提示
