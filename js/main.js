@@ -8,6 +8,26 @@ let editor;
 // 缓存导出CSS
 let cachedExportCSS = {};
 
+// 显示或隐藏按钮的通用函数
+function toggleButtonVisibility(buttonId, show) {
+    const button = document.getElementById(buttonId);
+    if (!button) return;
+    
+    if (show) {
+        button.style.display = 'flex';
+        button.style.visibility = 'visible';
+        button.style.opacity = '1';
+        button.classList.add('visible');
+        // 强制重绘按钮
+        button.offsetHeight;
+    } else {
+        button.style.display = 'none';
+        button.style.visibility = 'hidden';
+        button.style.opacity = '0';
+        button.classList.remove('visible');
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // 确保highlight.js已加载
     if (typeof hljs === 'undefined') {
@@ -26,12 +46,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 确保清空按钮在页面完全加载后显示
 window.onload = function() {
+    // 延迟显示按钮，确保DOM完全准备好
     setTimeout(function() {
-        const clearButton = document.getElementById('clear-button');
-        if (clearButton) {
-            clearButton.style.display = 'flex';
-        }
-    }, 1000);
+        toggleButtonVisibility('clear-button', true);
+    }, 1500); // 增加延迟时间
 };
 
 // 应用初始化
@@ -50,20 +68,15 @@ function initApp() {
     // 初始调整编辑器高度
     setTimeout(adjustEditorHeight, 300);
     
-    // 页面完全加载后显示清空按钮
+    // 页面完全加载后显示按钮
     setTimeout(function() {
-        const clearButton = document.getElementById('clear-button');
-        if (clearButton) {
-            clearButton.style.display = 'flex';
-        }
+        // 显示清空按钮
+        toggleButtonVisibility('clear-button', true);
         
         // 检查是否有内容，如果有则显示复制按钮
-        const copyButton = document.getElementById('copy-button');
-        if (copyButton) {
-            const content = editor.getValue().trim();
-            copyButton.style.display = content ? 'flex' : 'none';
-        }
-    }, 1000);
+        const content = editor.getValue().trim();
+        toggleButtonVisibility('copy-button', content !== '');
+    }, 1500); // 增加延迟时间
 }
 
 // 设置初始示例内容
@@ -554,62 +567,59 @@ function previewMarkdown() {
         }
         
         // 判断内容是否为空，控制复制按钮显示
-        const copyButton = document.getElementById('copy-button');
-        if (copyButton) {
-            if (content.trim() === '') {
-                copyButton.style.display = 'none';
-            } else {
-                // 检查是否有图片需要加载
-                const images = preview.querySelectorAll('img');
-                if (images.length > 0) {
-                    // 先隐藏复制按钮
-                    copyButton.style.display = 'none';
-                    
-                    // 创建一个计数器来跟踪已加载的图片
-                    let loadedImages = 0;
-                    const totalImages = images.length;
-                    
-                    // 为每个图片添加加载事件
-                    images.forEach(img => {
-                        // 已经加载完成的图片
-                        if (img.complete) {
+        if (content.trim() === '') {
+            toggleButtonVisibility('copy-button', false);
+        } else {
+            // 检查是否有图片需要加载
+            const images = preview.querySelectorAll('img');
+            if (images.length > 0) {
+                // 先隐藏复制按钮
+                toggleButtonVisibility('copy-button', false);
+                
+                // 创建一个计数器来跟踪已加载的图片
+                let loadedImages = 0;
+                const totalImages = images.length;
+                
+                // 为每个图片添加加载事件
+                images.forEach(img => {
+                    // 已经加载完成的图片
+                    if (img.complete) {
+                        loadedImages++;
+                        checkAllImagesLoaded();
+                    } else {
+                        // 监听图片加载事件
+                        img.addEventListener('load', function() {
                             loadedImages++;
                             checkAllImagesLoaded();
-                        } else {
-                            // 监听图片加载事件
-                            img.addEventListener('load', function() {
-                                loadedImages++;
-                                checkAllImagesLoaded();
-                            });
-                            
-                            // 监听图片加载失败事件
-                            img.addEventListener('error', function() {
-                                loadedImages++;
-                                checkAllImagesLoaded();
-                            });
-                        }
-                    });
-                    
-                    // 检查是否所有图片都已加载
-                    function checkAllImagesLoaded() {
-                        if (loadedImages >= totalImages) {
-                            // 所有图片已加载完成，显示复制按钮
-                            setTimeout(() => {
-                                copyButton.style.display = 'flex';
-                            }, 300);
-                        }
+                        });
+                        
+                        // 监听图片加载失败事件
+                        img.addEventListener('error', function() {
+                            loadedImages++;
+                            checkAllImagesLoaded();
+                        });
                     }
-                    
-                    // 设置超时，防止图片一直加载不完成
-                    setTimeout(() => {
-                        copyButton.style.display = 'flex';
-                    }, 15000);
-                } else {
-                    // 没有图片，直接显示复制按钮
-                    setTimeout(() => {
-                        copyButton.style.display = 'flex';
-                    }, 500);
+                });
+                
+                // 检查是否所有图片都已加载
+                function checkAllImagesLoaded() {
+                    if (loadedImages >= totalImages) {
+                        // 所有图片已加载完成，显示复制按钮
+                        setTimeout(() => {
+                            toggleButtonVisibility('copy-button', true);
+                        }, 300);
+                    }
                 }
+                
+                // 设置超时，防止图片一直加载不完成
+                setTimeout(() => {
+                    toggleButtonVisibility('copy-button', true);
+                }, 15000);
+            } else {
+                // 没有图片，直接显示复制按钮
+                setTimeout(() => {
+                    toggleButtonVisibility('copy-button', true);
+                }, 500);
             }
         }
     } catch (error) {
@@ -617,10 +627,7 @@ function previewMarkdown() {
         preview.innerHTML = '<div style="color: red;">渲染出错: ' + error.message + '</div>';
         
         // 发生错误时隐藏复制按钮
-        const copyButton = document.getElementById('copy-button');
-        if (copyButton) {
-            copyButton.style.display = 'none';
-        }
+        toggleButtonVisibility('copy-button', false);
     }
 }
 
@@ -887,10 +894,7 @@ function clearContent() {
     showToast('内容已清空');
     
     // 清空内容时隐藏复制按钮
-    const copyButton = document.getElementById('copy-button');
-    if (copyButton) {
-        copyButton.style.display = 'none';
-    }
+    toggleButtonVisibility('copy-button', false);
 }
 
 // 显示操作反馈提示
